@@ -1,0 +1,15 @@
+<wpml-config>
+    <admin-texts>
+        <key name="ENSIDE_PANEL">
+        	<key name="header_top_text" />
+            <key name="header_info_text" />
+            <key name="footer_copyright_editor" />
+            <key name="blog_page_title" />
+            <key name="portfolio_page_url" />
+            <key name="portfolio_item_slug" />
+            <key name="portfolio_category_slug" />
+            <key name="portfolio_taxonomy_name" />
+            <key name="portfolio_related_items_viewmore_button_title" />
+        </key>
+    </admin-texts>
+</wpml-config>

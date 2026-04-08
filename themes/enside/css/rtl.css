@@ -1,0 +1,5 @@
+/* This theme currently does not support RTL. You can add your RTL CSS rules to this file. */
+body {
+	direction: rtl;
+	unicode-bidi: embed;
+}
