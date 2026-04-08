@@ -27,7 +27,7 @@
 
       <div class="col-md-4 col-sm-4 col-xs-12">
         <div class="team-member text-center">
-          <div class="team-member-avatar" aria-hidden="true">&#x1F468;&#x200D;&#x1F4BC;</div>
+          <div class="team-member-avatar" aria-hidden="true">&#x1F468;&#x200D;&#x1F4BB;</div>
           <h4 class="team-member-name">Muneeb Khan</h4>
           <p class="team-member-role">CTO</p>
           <a class="team-member-linkedin" href="https://www.linkedin.com/in/muneebjs/" target="_blank" rel="noopener noreferrer">
