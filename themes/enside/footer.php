@@ -125,6 +125,11 @@ $footer_class .= ' footer-col-'.$footer_columns;
     ?>
 
 </div>
+<div class="row">
+    <div class="col-md-12 office-address">
+        <p>Plot No.51, C, East Commercial St, 21 Phase ll Phase 2 Commercial Area Defence Housing Authority, Karachi, 75500</p>
+    </div>
+</div>
 </div>
 <?php if(isset($enside_theme_options['scroll_to_top'])&&($enside_theme_options['scroll_to_top'])): ?>
 <?php 

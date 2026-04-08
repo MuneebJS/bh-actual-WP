@@ -1,13 +1,16 @@
-diff --git a/themes/enside/team-members.php b/themes/enside/team-members.php
-index 6d0f06f..eb2c5c5 100644
---- a/themes/enside/team-members.php
-+++ b/themes/enside/team-members.php
-@@ -38,7 +38,7 @@
+diff --git a/themes/enside/footer.php b/themes/enside/footer.php
+index 1b28f12..5ec6c90 100644
+--- a/themes/enside/footer.php
++++ b/themes/enside/footer.php
+@@ -125,6 +125,11 @@ $footer_class .= ' footer-col-'.$footer_columns;
+     ?>
  
-       <div class="col-md-4 col-sm-4 col-xs-12">
-         <div class="team-member text-center">
--          <div class="team-member-avatar" aria-hidden="true">&#x1F468;&#x200D;&#x1F4BC;</div>
-+          <div class="team-member-avatar" aria-hidden="true">&#x1F4DD;</div>
-           <h4 class="team-member-name">Muhammad Memon</h4>
-           <p class="team-member-role">&nbsp;</p>
-           <a class="team-member-linkedin" href="https://www.linkedin.com/company/boltay-huroof/people/" target="_blank" rel="noopener noreferrer">
+ </div>
++<div class="row">
++    <div class="col-md-12 office-address">
++        <p>Plot No.51, C, East Commercial St, 21 Phase ll Phase 2 Commercial Area Defence Housing Authority, Karachi, 75500</p>
++    </div>
++</div>
+ </div>
+ <?php if(isset($enside_theme_options['scroll_to_top'])&&($enside_theme_options['scroll_to_top'])): ?>
+ <?php 
