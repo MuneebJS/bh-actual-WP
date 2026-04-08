@@ -100,6 +100,9 @@ if(isset($enside_theme_options['blog_page_title_image']) && $enside_theme_option
   </div>
   <?php enside_show_breadcrumbs(); ?>
 </div>
+
+<?php get_template_part( 'team-members' ); ?>
+
 	<div class="container">
 		<div class="row">
 			<?php if ( is_active_sidebar( 'main-sidebar' ) && ( $blog_sidebarposition == 'left')) : ?>

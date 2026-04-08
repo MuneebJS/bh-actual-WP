@@ -232,6 +232,8 @@ function enside_scripts() {
 	wp_enqueue_style('nanoscroller', get_template_directory_uri() . '/css/nanoscroller.css');
 	wp_enqueue_style('enside-hover', get_template_directory_uri() . '/css/hover.css');// Special modified version, must have theme prefix
 
+	wp_enqueue_style('enside-team-members', get_template_directory_uri() . '/css/team-members.css', array(), '1.0', 'all');
+
 	if(isset($enside_theme_options['enable_progressbar']) && $enside_theme_options['enable_progressbar']) {
 		wp_enqueue_style('nprogress', get_template_directory_uri() . '/css/nprogress.css');
 		wp_register_script('nprogress', get_template_directory_uri() . '/js/nprogress.js', array(), '1.0', true);
