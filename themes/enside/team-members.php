@@ -38,7 +38,7 @@
 
       <div class="col-md-4 col-sm-4 col-xs-12">
         <div class="team-member text-center">
-          <div class="team-member-avatar" aria-hidden="true">&#x1F468;&#x200D;&#x1F4BC;</div>
+          <div class="team-member-avatar" aria-hidden="true">&#x1F4DD;</div>
           <h4 class="team-member-name">Muhammad Memon</h4>
           <p class="team-member-role">&nbsp;</p>
           <a class="team-member-linkedin" href="https://www.linkedin.com/company/boltay-huroof/people/" target="_blank" rel="noopener noreferrer">
