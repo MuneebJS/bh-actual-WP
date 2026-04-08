@@ -103,6 +103,8 @@ if(isset($enside_theme_options['blog_page_title_image']) && $enside_theme_option
 
 <?php get_template_part( 'team-members' ); ?>
 
+<?php get_template_part( 'products-section' ); ?>
+
 	<div class="container">
 		<div class="row">
 			<?php if ( is_active_sidebar( 'main-sidebar' ) && ( $blog_sidebarposition == 'left')) : ?>
