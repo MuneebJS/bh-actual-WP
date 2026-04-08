@@ -1,126 +1,26 @@
-diff --git a/themes/enside/css/products-section.css b/themes/enside/css/products-section.css
+diff --git a/themes/enside/css/office-address.css b/themes/enside/css/office-address.css
 new file mode 100644
-index 0000000..8cc79af
+index 0000000..e797ce9
 --- /dev/null
-+++ b/themes/enside/css/products-section.css
-@@ -0,0 +1,62 @@
++++ b/themes/enside/css/office-address.css
+@@ -0,0 +1,8 @@
 +/*
-+ * Our Products Section Styles
++ * Office Address Footer Styles
 + * @package Enside
 + */
 +
-+.products-section {
-+    padding: 60px 0;
-+    background: #f7f8fa;
-+    border-bottom: 1px solid #f0f0f0;
-+}
-+
-+.products-section-title {
-+    margin-bottom: 40px;
-+    font-size: 28px;
-+    color: #2a2f35;
-+    text-transform: uppercase;
-+    letter-spacing: 1px;
-+}
-+
-+.products-list {
-+    list-style: none;
-+    padding: 0;
-+    margin: 0;
-+}
-+
-+.products-list-item {
-+    padding: 18px 24px;
-+    margin-bottom: 12px;
-+    background: #ffffff;
-+    border: 1px solid #f0f0f0;
-+    border-radius: 3px;
-+    font-size: 16px;
-+    color: #2a2f35;
-+    -webkit-transition: box-shadow 0.3s ease, border-color 0.3s ease;
-+            transition: box-shadow 0.3s ease, border-color 0.3s ease;
-+}
-+
-+.products-list-item:last-child {
-+    margin-bottom: 0;
-+}
-+
-+.products-list-item:hover {
-+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-+    border-color: #d8d8d8;
-+}
-+
-+/* Responsive adjustments */
-+@media (max-width: 767px) {
-+    .products-section {
-+        padding: 40px 0;
-+    }
-+
-+    .products-section-title {
-+        font-size: 22px;
-+        margin-bottom: 28px;
-+    }
-+
-+    .products-list-item {
-+        font-size: 15px;
-+        padding: 14px 18px;
-+    }
++.office-address {
++    text-align: center;
 +}
 diff --git a/themes/enside/functions.php b/themes/enside/functions.php
-index 7b168a2..ba5cea6 100644
+index ba5cea6..4bd0d0b 100644
 --- a/themes/enside/functions.php
 +++ b/themes/enside/functions.php
-@@ -233,6 +233,7 @@ function enside_scripts() {
- 	wp_enqueue_style('enside-hover', get_template_directory_uri() . '/css/hover.css');// Special modified version, must have theme prefix
+@@ -234,6 +234,7 @@ function enside_scripts() {
  
  	wp_enqueue_style('enside-team-members', get_template_directory_uri() . '/css/team-members.css', array(), '1.0', 'all');
-+	wp_enqueue_style('enside-products-section', get_template_directory_uri() . '/css/products-section.css', array(), '1.0', 'all');
+ 	wp_enqueue_style('enside-products-section', get_template_directory_uri() . '/css/products-section.css', array(), '1.0', 'all');
++	wp_enqueue_style('enside-office-address', get_template_directory_uri() . '/css/office-address.css', array(), '1.0', 'all');
  
  	if(isset($enside_theme_options['enable_progressbar']) && $enside_theme_options['enable_progressbar']) {
  		wp_enqueue_style('nprogress', get_template_directory_uri() . '/css/nprogress.css');
-diff --git a/themes/enside/index.php b/themes/enside/index.php
-index 33e4bfd..2d0dce5 100644
---- a/themes/enside/index.php
-+++ b/themes/enside/index.php
-@@ -103,6 +103,8 @@ if(isset($enside_theme_options['blog_page_title_image']) && $enside_theme_option
- 
- <?php get_template_part( 'team-members' ); ?>
- 
-+<?php get_template_part( 'products-section' ); ?>
-+
- 	<div class="container">
- 		<div class="row">
- 			<?php if ( is_active_sidebar( 'main-sidebar' ) && ( $blog_sidebarposition == 'left')) : ?>
-diff --git a/themes/enside/products-section.php b/themes/enside/products-section.php
-new file mode 100644
-index 0000000..7bb6774
---- /dev/null
-+++ b/themes/enside/products-section.php
-@@ -0,0 +1,27 @@
-+<?php
-+/**
-+ * Template part for displaying the Our Products section.
-+ *
-+ * @package Enside
-+ */
-+?>
-+<section class="products-section content-block">
-+  <div class="container">
-+    <div class="row">
-+      <div class="col-md-12 text-center">
-+        <h2 class="products-section-title">Our Products</h2>
-+      </div>
-+    </div>
-+    <div class="row">
-+      <div class="col-md-8 col-md-offset-2">
-+        <ul class="products-list">
-+          <li class="products-list-item">Inclusive Braille Books</li>
-+          <li class="products-list-item">Inclusive Braille Forms</li>
-+          <li class="products-list-item">Inclusive Braille Noorani Qaida</li>
-+          <li class="products-list-item">Urdu/English to Braille Mobile Apps</li>
-+          <li class="products-list-item">Accessibility Software for Banks</li>
-+        </ul>
-+      </div>
-+    </div>
-+  </div>
-+</section>
