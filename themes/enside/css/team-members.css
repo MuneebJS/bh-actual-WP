@@ -1,0 +1,101 @@
+/*
+ * Team Members Section Styles
+ * @package Enside
+ */
+
+.team-section {
+    padding: 60px 0;
+    background: #ffffff;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.team-section-title {
+    margin-bottom: 40px;
+    font-size: 28px;
+    color: #2a2f35;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.team-members-row {
+    margin-top: 10px;
+}
+
+.team-member {
+    padding: 30px 20px;
+    margin-bottom: 30px;
+    border: 1px solid #f0f0f0;
+    border-radius: 3px;
+    background: #fafafa;
+    -webkit-transition: box-shadow 0.3s ease, border-color 0.3s ease;
+            transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.team-member:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border-color: #d8d8d8;
+}
+
+.team-member-avatar {
+    font-size: 64px;
+    line-height: 1;
+    margin-bottom: 16px;
+}
+
+.team-member-name {
+    font-size: 17px;
+    font-weight: 600;
+    color: #2a2f35;
+    margin-bottom: 6px;
+    margin-top: 0;
+}
+
+.team-member-role {
+    font-size: 13px;
+    color: #888888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 14px;
+    min-height: 20px;
+}
+
+.team-member-linkedin {
+    display: inline-block;
+    padding: 6px 18px;
+    border: 1px solid #3452ff;
+    color: #3452ff;
+    font-size: 13px;
+    border-radius: 2px;
+    -webkit-transition: background 0.2s ease, color 0.2s ease;
+            transition: background 0.2s ease, color 0.2s ease;
+    text-decoration: none;
+}
+
+.team-member-linkedin:hover,
+.team-member-linkedin:focus {
+    background: #3452ff;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+    .team-section {
+        padding: 40px 0;
+    }
+
+    .team-section-title {
+        font-size: 22px;
+        margin-bottom: 28px;
+    }
+
+    .team-member {
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .team-member-avatar {
+        font-size: 52px;
+    }
+}
