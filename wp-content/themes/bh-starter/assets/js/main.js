@@ -68,8 +68,10 @@
   });
 
   /* ---- Intersection Observer for fade-in animations ---- */
+  document.documentElement.classList.add('js-ready');
+
   if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver(
+    var observer = new IntersectionObserver(
       function (entries) {
         entries.forEach(function (entry) {
           if (entry.isIntersecting) {
@@ -78,7 +80,7 @@
           }
         });
       },
-      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+      { threshold: 0.08, rootMargin: '0px 0px -20px 0px' }
     );
 
     document.querySelectorAll('.fade-in').forEach(function (el) {
