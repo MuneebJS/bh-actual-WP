@@ -9,7 +9,7 @@ $bh_team = array(
 	array(
 		'slug'     => 'hafiz-umer-sheikh',
 		'name'     => 'Hafiz Umer Sheikh',
-		'role'     => 'CEO',
+		'role'     => 'Co-founder & CEO',
 		'linkedin' => 'https://www.linkedin.com/in/h-s-umer-farooq/',
 	),
 	array(
@@ -19,10 +19,22 @@ $bh_team = array(
 		'linkedin' => 'https://www.linkedin.com/in/muneebjs/',
 	),
 	array(
-		'slug'     => 'muhammad-memon',
-		'name'     => 'Muhammad Memon',
-		'role'     => '',
-		'linkedin' => 'https://www.linkedin.com/company/boltay-huroof/people/',
+		'slug'     => 'shafia-abdul-latif',
+		'name'     => 'Shafia Abdul Latif',
+		'role'     => 'CMO',
+		'linkedin' => '',
+	),
+	array(
+		'slug'     => 'shah-bakht-bin-saeed',
+		'name'     => 'Shah Bakht Bin Saeed',
+		'role'     => 'Head BD',
+		'linkedin' => '',
+	),
+	array(
+		'slug'     => 'saud-ahmed',
+		'name'     => 'Saud Ahmed',
+		'role'     => 'Quality Assurance',
+		'linkedin' => '',
 	),
 );
 ?>
@@ -59,10 +71,12 @@ $bh_team = array(
 					<?php else : ?>
 						<p class="team-role">&nbsp;</p>
 					<?php endif; ?>
+					<?php if ( ! empty( $member['linkedin'] ) ) : ?>
 					<a class="team-linkedin" href="<?php echo esc_url( $member['linkedin'] ); ?>" target="_blank" rel="noopener noreferrer">
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
 						<?php esc_html_e( 'LinkedIn', 'bh-starter' ); ?>
 					</a>
+					<?php endif; ?>
 				</div>
 			<?php endforeach; ?>
 		</div>
