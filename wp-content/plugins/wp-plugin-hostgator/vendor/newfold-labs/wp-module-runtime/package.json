@@ -1,0 +1,26 @@
+{
+  "name": "@newfold-labs/wp-module-runtime",
+  "description": "Runtime for Newfold WP modules and plugins",
+  "license": "GPL-2.0-or-later",
+  "version": "1.0.5",
+  "main": "build/index.js",
+  "files": [
+    "build/index.js",
+    "index.d.ts"
+  ],
+  "types": "index.d.ts",
+  "scripts": {
+    "prepublishOnly": "npm run build",
+    "build": "wp-scripts build ./src/index.js --config ./scripts/webpack.config.js",
+    "lint": "wp-scripts lint-js ./src/index.js",
+    "start": "wp-scripts start ./src/index.js --config ./scripts/webpack.config.js",
+    "test:unit": "echo \"No tests implemented\"",
+    "test:e2e": "echo \"No tests implemented\""
+  },
+  "dependencies": {
+    "@wordpress/url": "3.36.0"
+  },
+  "devDependencies": {
+    "@wordpress/scripts": "26.6.0"
+  }
+}

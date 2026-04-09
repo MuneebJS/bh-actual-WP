@@ -1,0 +1,48 @@
+/* -------------------------------------------------------------------------- */
+/*                             Design Item styles                             */
+/* -------------------------------------------------------------------------- */
+:root {
+	--nfd-wba-design-item--template-height: 500px;
+}
+
+.nfd-wba-design-item {
+	&:focus-visible {
+		outline: 2px solid var(--nfd-wba-color-brand);
+		outline-offset: 2px;
+	}
+}
+
+.nfd-wba-design-item--template {
+	.block-editor-block-preview__container {
+		max-height: var(--nfd-wba-design-item--template-height);
+	}
+
+	.block-editor-block-preview__container:before {
+		transition: backdrop-filter var(--nfd-wba-transition-duration)
+			var(--nfd-wba-transition-timing);
+	}
+
+	&.nfd-wba-inserting-design .block-editor-block-preview__container:before {
+		content: "";
+		position: absolute;
+		inset: 0;
+		backdrop-filter: grayscale(1);
+		z-index: 1;
+	}
+
+	iframe {
+		transition: transform 6s ease !important;
+		max-height: unset !important;
+	}
+
+	&:hover {
+		iframe {
+			--nfd-wba-scroll-value: calc(
+				97% - var(--nfd-wba-design-item--template-height)
+			);
+
+			transition-duration: 12s;
+			transform: translateY(calc(var(--nfd-wba-scroll-value) * -1));
+		}
+	}
+}
