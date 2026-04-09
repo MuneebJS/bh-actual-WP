@@ -9,7 +9,7 @@
 	<div class="bh-container">
 		<div class="about-inner">
 
-			<div class="about-content fade-in">
+			<div class="about-content">
 				<span class="about-label"><?php esc_html_e( 'About Us', 'bh-starter' ); ?></span>
 				<h2 class="about-title"><?php bloginfo( 'name' ); ?></h2>
 				<p class="about-description">
@@ -20,7 +20,7 @@
 				</a>
 			</div>
 
-			<div class="about-visual fade-in fade-in-delay-2">
+			<div class="about-visual">
 				<div class="about-card">
 					<h3 class="about-card-title"><?php bloginfo( 'name' ); ?></h3>
 					<p class="about-card-text">

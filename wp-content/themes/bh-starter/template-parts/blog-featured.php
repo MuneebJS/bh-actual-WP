@@ -19,7 +19,7 @@ if ( ! $bh_blog_query->have_posts() ) {
 <section class="blog-section bh-section" id="blog">
 	<div class="bh-container">
 
-		<div class="section-header fade-in">
+		<div class="section-header">
 			<span class="section-label"><?php esc_html_e( 'Latest News', 'bh-starter' ); ?></span>
 			<h2 class="section-title"><?php esc_html_e( 'Explore Our Blog', 'bh-starter' ); ?></h2>
 			<p class="section-subtitle"><?php esc_html_e( 'Stay up to date with our latest stories, updates, and insights.', 'bh-starter' ); ?></p>
@@ -32,7 +32,7 @@ if ( ! $bh_blog_query->have_posts() ) {
 				$bh_blog_query->the_post();
 				$counter++;
 			?>
-				<article class="blog-card fade-in fade-in-delay-<?php echo esc_attr( $counter ); ?>">
+				<article class="blog-card">
 					<?php if ( has_post_thumbnail() ) : ?>
 						<a href="<?php the_permalink(); ?>" class="blog-card-image">
 							<?php the_post_thumbnail( 'bh-blog-thumb' ); ?>

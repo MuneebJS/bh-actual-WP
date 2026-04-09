@@ -30,7 +30,7 @@ $bh_team = array(
 <section class="team-section bh-section" id="team">
 	<div class="bh-container">
 
-		<div class="section-header fade-in">
+		<div class="section-header">
 			<span class="section-label"><?php esc_html_e( 'Our People', 'bh-starter' ); ?></span>
 			<h2 class="section-title"><?php esc_html_e( 'Meet Our Team', 'bh-starter' ); ?></h2>
 			<p class="section-subtitle"><?php esc_html_e( 'The passionate people behind our mission to make the world more accessible.', 'bh-starter' ); ?></p>
@@ -42,7 +42,7 @@ $bh_team = array(
 					? bh_starter_team_avatar_url( $member['slug'] )
 					: get_template_directory_uri() . '/assets/img/team/' . $member['slug'] . '.svg';
 			?>
-				<div class="team-card fade-in fade-in-delay-<?php echo esc_attr( $i + 1 ); ?>">
+				<div class="team-card">
 					<div class="team-avatar">
 						<img
 							src="<?php echo esc_url( $avatar ); ?>"

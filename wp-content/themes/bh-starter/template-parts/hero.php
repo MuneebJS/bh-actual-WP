@@ -9,7 +9,7 @@
 	<div class="bh-container">
 		<div class="hero-inner">
 
-			<div class="hero-content fade-in">
+			<div class="hero-content">
 				<div class="hero-badge">
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
 					<?php esc_html_e( 'Accessibility-First Solutions', 'bh-starter' ); ?>
@@ -34,7 +34,7 @@
 				</div>
 			</div>
 
-			<div class="hero-visual fade-in fade-in-delay-2">
+			<div class="hero-visual">
 				<div class="hero-visual-card">
 					<div class="hero-card-icon" aria-hidden="true">
 						<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>

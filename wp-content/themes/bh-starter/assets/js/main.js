@@ -67,28 +67,5 @@
     });
   });
 
-  /* ---- Intersection Observer for fade-in animations ---- */
-  document.documentElement.classList.add('js-ready');
-
-  if ('IntersectionObserver' in window) {
-    var observer = new IntersectionObserver(
-      function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.08, rootMargin: '0px 0px -20px 0px' }
-    );
-
-    document.querySelectorAll('.fade-in').forEach(function (el) {
-      observer.observe(el);
-    });
-  } else {
-    document.querySelectorAll('.fade-in').forEach(function (el) {
-      el.classList.add('visible');
-    });
-  }
+  /* ---- (animations removed — content is always visible) ---- */
 })();

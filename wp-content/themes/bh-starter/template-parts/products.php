@@ -37,7 +37,7 @@ $bh_products = array(
 <section class="products-section bh-section" id="products">
 	<div class="bh-container">
 
-		<div class="section-header fade-in">
+		<div class="section-header">
 			<span class="section-label"><?php esc_html_e( 'What We Build', 'bh-starter' ); ?></span>
 			<h2 class="section-title"><?php esc_html_e( 'Our Core Products', 'bh-starter' ); ?></h2>
 			<p class="section-subtitle"><?php esc_html_e( 'Technology-driven solutions making education and everyday life accessible for visually impaired communities.', 'bh-starter' ); ?></p>
@@ -45,7 +45,7 @@ $bh_products = array(
 
 		<div class="products-grid">
 			<?php foreach ( $bh_products as $i => $product ) : ?>
-				<div class="product-card fade-in fade-in-delay-<?php echo esc_attr( ( $i % 4 ) + 1 ); ?>">
+				<div class="product-card">
 					<div class="product-card-icon" aria-hidden="true">
 						<?php echo $product['icon']; ?>
 					</div>
