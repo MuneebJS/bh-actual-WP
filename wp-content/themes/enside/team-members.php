@@ -2,8 +2,7 @@
 /**
  * Template part for displaying the Team Members section.
  *
- * Avatar images: drop Bitmoji (or any) PNG/WebP into img/team/ using the slug
- * filename, e.g. hafiz-umer-sheikh.png — same names as the bundled SVG placeholders.
+ * Avatar images: PNG, WebP, or JPEG in img/team/ named {slug}.ext (see $enside_team_members).
  *
  * @package Enside
  */
@@ -12,7 +11,7 @@ $enside_team_members = array(
 	array(
 		'slug'     => 'hafiz-umer-sheikh',
 		'name'     => 'Hafiz Umer Sheikh',
-		'role'     => 'CEO',
+		'role'     => 'Co-founder & CEO',
 		'linkedin' => 'https://www.linkedin.com/in/h-s-umer-farooq/',
 	),
 	array(
@@ -22,10 +21,22 @@ $enside_team_members = array(
 		'linkedin' => 'https://www.linkedin.com/in/muneebjs/',
 	),
 	array(
-		'slug'     => 'muhammad-memon',
-		'name'     => 'Muhammad Memon',
-		'role'     => '',
-		'linkedin' => 'https://www.linkedin.com/company/boltay-huroof/people/',
+		'slug'     => 'shafia-abdul-latif',
+		'name'     => 'Shafia Abdul Latif',
+		'role'     => 'CMO',
+		'linkedin' => '',
+	),
+	array(
+		'slug'     => 'shah-bakht-bin-saeed',
+		'name'     => 'Shah Bakht Bin Saeed',
+		'role'     => 'Head BD',
+		'linkedin' => '',
+	),
+	array(
+		'slug'     => 'saud-ahmed',
+		'name'     => 'Saud Ahmed',
+		'role'     => 'Quality Assurance',
+		'linkedin' => '',
 	),
 );
 ?>
@@ -62,9 +73,11 @@ $enside_team_members = array(
 					<?php else : ?>
 					<p class="team-member-role team-member-role-empty" aria-hidden="true">&nbsp;</p>
 					<?php endif; ?>
+					<?php if ( ! empty( $member['linkedin'] ) ) : ?>
 					<a class="team-member-linkedin" href="<?php echo esc_url( $member['linkedin'] ); ?>" target="_blank" rel="noopener noreferrer">
 						<?php esc_html_e( 'LinkedIn', 'enside' ); ?>
 					</a>
+					<?php endif; ?>
 				</div>
 			</div>
 			<?php endforeach; ?>
