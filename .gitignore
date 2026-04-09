@@ -1,0 +1,29 @@
+# WordPress Core
+wp-admin/
+wp-includes/
+index.php
+license.txt
+readme.html
+wp-*.php
+!wp-config-sample.php
+
+# Configuration & Sensitive Data
+wp-config.php
+.htaccess
+sitemap.xml
+sitemap.xml.gz
+*.log
+error_log
+
+# Content & Uploads (Usually too large for Git)
+wp-content/uploads/
+wp-content/blogs.dir/
+wp-content/upgrade/
+wp-content/backup-db/
+wp-content/advanced-cache.php
+wp-content/wp-cache-config.php
+wp-content/cache/
+
+# System files
+.DS_Store
+Thumbs.db
