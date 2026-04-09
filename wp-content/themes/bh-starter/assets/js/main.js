@@ -67,5 +67,27 @@
     });
   });
 
+  /* ---- Product detail gallery thumbs ---- */
+  const gallery = document.querySelector('[data-product-gallery]');
+  if (gallery) {
+    const mainImg = document.getElementById('product-detail-main-img');
+    const thumbs = gallery.querySelectorAll('.product-detail-thumb');
+    if (mainImg && thumbs.length) {
+      thumbs.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          const src = btn.getAttribute('data-full-src');
+          if (!src) return;
+          mainImg.setAttribute('src', src);
+          thumbs.forEach(function (t) {
+            t.classList.remove('is-active');
+            t.setAttribute('aria-pressed', 'false');
+          });
+          btn.classList.add('is-active');
+          btn.setAttribute('aria-pressed', 'true');
+        });
+      });
+    }
+  }
+
   /* ---- (animations removed — content is always visible) ---- */
 })();

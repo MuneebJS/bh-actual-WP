@@ -1,0 +1,101 @@
+<?php
+/**
+ * Virtual template: single product (routed via ?bh_product=slug → /product/slug/).
+ *
+ * @package BH_Starter
+ */
+
+$slug    = get_query_var( 'bh_product' );
+$product = bh_starter_get_product_by_slug( $slug );
+
+get_header();
+
+$images       = isset( $product['images'] ) && is_array( $product['images'] ) ? $product['images'] : array();
+$image_urls   = array();
+$dir          = bh_starter_products_images_dir();
+foreach ( $images as $rel ) {
+	$path = $dir . ltrim( str_replace( '\\', '/', $rel ), '/' );
+	if ( is_readable( $path ) ) {
+		$image_urls[] = array(
+			'url' => bh_starter_products_image_url( $rel ),
+			'alt' => $product['name'],
+		);
+	}
+}
+$primary_url = ! empty( $image_urls ) ? $image_urls[0]['url'] : '';
+$description = isset( $product['description'] ) && is_array( $product['description'] ) ? $product['description'] : array();
+?>
+
+<div class="page-banner page-banner--product">
+	<div class="bh-container">
+		<p class="page-banner-breadcrumb">
+			<a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'Home', 'bh-starter' ); ?></a>
+			<span aria-hidden="true"> / </span>
+			<a href="<?php echo esc_url( bh_starter_products_archive_url() ); ?>"><?php esc_html_e( 'Products', 'bh-starter' ); ?></a>
+			<span aria-hidden="true"> / </span>
+			<span><?php echo esc_html( $product['name'] ); ?></span>
+		</p>
+		<h1 class="page-banner-title"><?php echo esc_html( $product['name'] ); ?></h1>
+		<p class="page-banner-lead"><?php echo esc_html( $product['short'] ); ?></p>
+	</div>
+</div>
+
+<div class="product-detail-wrap">
+	<div class="bh-container">
+		<div class="product-detail-grid">
+			<div class="product-detail-gallery" data-product-gallery>
+				<?php if ( ! empty( $image_urls ) ) : ?>
+					<div class="product-detail-main">
+						<img
+							id="product-detail-main-img"
+							src="<?php echo esc_url( $primary_url ); ?>"
+							alt="<?php echo esc_attr( $product['name'] ); ?>"
+							width="960"
+							height="600"
+							decoding="async"
+							fetchpriority="high"
+						>
+					</div>
+					<?php if ( count( $image_urls ) > 1 ) : ?>
+						<ul class="product-detail-thumbs" role="list">
+							<?php foreach ( $image_urls as $i => $img ) : ?>
+								<li>
+									<button
+										type="button"
+										class="product-detail-thumb<?php echo 0 === $i ? ' is-active' : ''; ?>"
+										data-full-src="<?php echo esc_url( $img['url'] ); ?>"
+										aria-label="<?php echo esc_attr( sprintf( /* translators: %d: image number */ __( 'Show image %d', 'bh-starter' ), $i + 1 ) ); ?>"
+										aria-pressed="<?php echo 0 === $i ? 'true' : 'false'; ?>"
+									>
+										<img src="<?php echo esc_url( $img['url'] ); ?>" alt="" loading="lazy" decoding="async" width="160" height="120">
+									</button>
+								</li>
+							<?php endforeach; ?>
+						</ul>
+					<?php endif; ?>
+				<?php else : ?>
+					<div class="product-detail-empty">
+						<div class="product-detail-empty-icon" aria-hidden="true"><?php echo $product['icon']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
+						<p><?php esc_html_e( 'Gallery images for this product will appear here once added to the theme under assets/img/products.', 'bh-starter' ); ?></p>
+					</div>
+				<?php endif; ?>
+			</div>
+			<div class="product-detail-copy">
+				<?php foreach ( $description as $para ) : ?>
+					<p><?php echo esc_html( $para ); ?></p>
+				<?php endforeach; ?>
+				<div class="product-detail-actions">
+					<a class="bh-btn bh-btn--primary" href="<?php echo esc_url( home_url( '/contact' ) ); ?>">
+						<?php esc_html_e( 'Get in Touch', 'bh-starter' ); ?>
+					</a>
+					<a class="bh-btn bh-btn--outline" href="<?php echo esc_url( bh_starter_products_archive_url() ); ?>">
+						<?php esc_html_e( 'All products', 'bh-starter' ); ?>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<?php
+get_footer();

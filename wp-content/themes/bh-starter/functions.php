@@ -9,6 +9,8 @@ if ( ! defined( 'BH_STARTER_VERSION' ) ) {
 	define( 'BH_STARTER_VERSION', '1.0.0' );
 }
 
+require_once get_template_directory() . '/inc/bh-starter-products.php';
+
 /* ---------- Theme Setup ---------- */
 
 function bh_starter_setup() {
@@ -209,3 +211,45 @@ function bh_starter_body_classes( $classes ) {
 	return $classes;
 }
 add_filter( 'body_class', 'bh_starter_body_classes' );
+
+/* ---------- Product catalog routes (/product/{slug}/) ---------- */
+
+function bh_starter_register_product_rewrites() {
+	add_rewrite_rule( '^product/([^/]+)/?$', 'index.php?bh_product=$matches[1]', 'top' );
+}
+add_action( 'init', 'bh_starter_register_product_rewrites' );
+
+function bh_starter_product_query_vars( $vars ) {
+	$vars[] = 'bh_product';
+	return $vars;
+}
+add_filter( 'query_vars', 'bh_starter_product_query_vars' );
+
+function bh_starter_product_template_include( $template ) {
+	$slug = get_query_var( 'bh_product' );
+	if ( ! $slug ) {
+		return $template;
+	}
+	if ( ! bh_starter_get_product_by_slug( $slug ) ) {
+		global $wp_query;
+		$wp_query->set_404();
+		status_header( 404 );
+		return get_404_template();
+	}
+	return get_template_directory() . '/product-detail.php';
+}
+add_filter( 'template_include', 'bh_starter_product_template_include', 99 );
+
+function bh_starter_flush_product_rewrites() {
+	bh_starter_register_product_rewrites();
+	flush_rewrite_rules( false );
+}
+add_action( 'after_switch_theme', 'bh_starter_flush_product_rewrites' );
+
+function bh_starter_body_classes_products( $classes ) {
+	if ( bh_starter_is_product_detail() ) {
+		$classes[] = 'product-detail-page';
+	}
+	return $classes;
+}
+add_filter( 'body_class', 'bh_starter_body_classes_products' );
