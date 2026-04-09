@@ -197,3 +197,12 @@ function bh_starter_product_card_image_url( $product ) {
 function bh_starter_is_product_detail() {
 	return (bool) get_query_var( 'bh_product' );
 }
+
+/**
+ * Whether the current request is the virtual /products/ catalog route.
+ *
+ * @return bool
+ */
+function bh_starter_is_products_catalog_route() {
+	return (bool) get_query_var( 'bh_products_catalog' );
+}

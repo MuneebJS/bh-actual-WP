@@ -212,20 +212,61 @@ function bh_starter_body_classes( $classes ) {
 }
 add_filter( 'body_class', 'bh_starter_body_classes' );
 
-/* ---------- Product catalog routes (/product/{slug}/) ---------- */
+/* ---------- Product catalog routes (/products/, /product/{slug}/) ---------- */
 
 function bh_starter_register_product_rewrites() {
+	add_rewrite_rule( '^products/?$', 'index.php?bh_products_catalog=1', 'top' );
 	add_rewrite_rule( '^product/([^/]+)/?$', 'index.php?bh_product=$matches[1]', 'top' );
 }
 add_action( 'init', 'bh_starter_register_product_rewrites' );
 
+/**
+ * Bump when adding rewrite rules so existing installs flush once (Settings → Permalinks not required).
+ */
+function bh_starter_maybe_flush_product_rewrites() {
+	$version = '2';
+	if ( get_option( 'bh_starter_rewrite_version' ) === $version ) {
+		return;
+	}
+	bh_starter_register_product_rewrites();
+	flush_rewrite_rules( false );
+	update_option( 'bh_starter_rewrite_version', $version );
+}
+add_action( 'init', 'bh_starter_maybe_flush_product_rewrites', 99 );
+
 function bh_starter_product_query_vars( $vars ) {
+	$vars[] = 'bh_products_catalog';
 	$vars[] = 'bh_product';
 	return $vars;
 }
 add_filter( 'query_vars', 'bh_starter_product_query_vars' );
 
+/**
+ * Custom index.php rewrites match no posts; prevent a false 404 so we can serve our templates.
+ *
+ * @param bool     $preempt  Whether to short-circuit default 404 handling.
+ * @param WP_Query $wp_query Main query.
+ * @return bool
+ */
+function bh_starter_pre_handle_404( $preempt, $wp_query ) {
+	if ( ! $wp_query->is_main_query() ) {
+		return $preempt;
+	}
+	if ( get_query_var( 'bh_products_catalog' ) ) {
+		return true;
+	}
+	$slug = get_query_var( 'bh_product' );
+	if ( $slug && bh_starter_get_product_by_slug( $slug ) ) {
+		return true;
+	}
+	return $preempt;
+}
+add_filter( 'pre_handle_404', 'bh_starter_pre_handle_404', 10, 2 );
+
 function bh_starter_product_template_include( $template ) {
+	if ( get_query_var( 'bh_products_catalog' ) ) {
+		return get_template_directory() . '/products-catalog.php';
+	}
 	$slug = get_query_var( 'bh_product' );
 	if ( ! $slug ) {
 		return $template;
@@ -243,13 +284,31 @@ add_filter( 'template_include', 'bh_starter_product_template_include', 99 );
 function bh_starter_flush_product_rewrites() {
 	bh_starter_register_product_rewrites();
 	flush_rewrite_rules( false );
+	update_option( 'bh_starter_rewrite_version', '2' );
 }
 add_action( 'after_switch_theme', 'bh_starter_flush_product_rewrites' );
 
 function bh_starter_body_classes_products( $classes ) {
+	if ( bh_starter_is_products_catalog_route() ) {
+		$classes[] = 'products-catalog-page';
+	}
 	if ( bh_starter_is_product_detail() ) {
 		$classes[] = 'product-detail-page';
 	}
 	return $classes;
 }
 add_filter( 'body_class', 'bh_starter_body_classes_products' );
+
+function bh_starter_products_catalog_document_title( $parts ) {
+	if ( bh_starter_is_products_catalog_route() ) {
+		$parts['title'] = __( 'Products', 'bh-starter' );
+	} elseif ( bh_starter_is_product_detail() ) {
+		$slug    = get_query_var( 'bh_product' );
+		$product = $slug ? bh_starter_get_product_by_slug( $slug ) : null;
+		if ( $product ) {
+			$parts['title'] = $product['name'];
+		}
+	}
+	return $parts;
+}
+add_filter( 'document_title_parts', 'bh_starter_products_catalog_document_title', 20 );
