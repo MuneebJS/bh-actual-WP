@@ -27,6 +27,12 @@ $description = isset( $product['description'] ) && is_array( $product['descripti
 $app_details = isset( $product['app_details'] ) && is_array( $product['app_details'] ) ? $product['app_details'] : array();
 $features    = isset( $app_details['features'] ) && is_array( $app_details['features'] ) ? $app_details['features'] : array();
 $screenshots = isset( $app_details['screenshots'] ) && is_array( $app_details['screenshots'] ) ? $app_details['screenshots'] : array();
+$show_gallery = ! empty( $image_urls ) || empty( $app_details );
+$grid_class   = 'product-detail-grid';
+
+if ( ! $show_gallery ) {
+	$grid_class .= ' product-detail-grid--no-gallery';
+}
 ?>
 
 <div class="page-banner page-banner--product">
@@ -43,47 +49,48 @@ $screenshots = isset( $app_details['screenshots'] ) && is_array( $app_details['s
 	</div>
 </div>
 
-<div class="product-detail-wrap">
-	<div class="bh-container">
-		<div class="product-detail-grid">
-			<div class="product-detail-gallery" data-product-gallery>
-				<?php if ( ! empty( $image_urls ) ) : ?>
-					<div class="product-detail-main">
-						<img
-							id="product-detail-main-img"
-							src="<?php echo esc_url( $primary_url ); ?>"
-							alt="<?php echo esc_attr( $product['name'] ); ?>"
-							width="960"
-							height="600"
-							decoding="async"
-							fetchpriority="high"
-						>
-					</div>
-					<?php if ( count( $image_urls ) > 1 ) : ?>
-						<ul class="product-detail-thumbs" role="list">
-							<?php foreach ( $image_urls as $i => $img ) : ?>
-								<li>
-									<button
-										type="button"
-										class="product-detail-thumb<?php echo 0 === $i ? ' is-active' : ''; ?>"
-										data-full-src="<?php echo esc_url( $img['url'] ); ?>"
-										aria-label="<?php echo esc_attr( sprintf( /* translators: %d: image number */ __( 'Show image %d', 'bh-starter' ), $i + 1 ) ); ?>"
-										aria-pressed="<?php echo 0 === $i ? 'true' : 'false'; ?>"
-									>
-										<img src="<?php echo esc_url( $img['url'] ); ?>" alt="" loading="lazy" decoding="async" width="160" height="120">
-									</button>
-								</li>
-							<?php endforeach; ?>
-						</ul>
-					<?php endif; ?>
-				<?php else : ?>
-					<div class="product-detail-empty">
-						<div class="product-detail-empty-icon" aria-hidden="true"><?php echo $product['icon']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
-						<p><?php esc_html_e( 'Gallery images for this product will appear here once added to the theme under assets/img/products.', 'bh-starter' ); ?></p>
+	<div class="product-detail-wrap">
+		<div class="bh-container">
+			<div class="<?php echo esc_attr( $grid_class ); ?>">
+				<?php if ( $show_gallery ) : ?>
+					<div class="product-detail-gallery" data-product-gallery>
+						<?php if ( ! empty( $image_urls ) ) : ?>
+							<div class="product-detail-main">
+								<img
+									id="product-detail-main-img"
+									src="<?php echo esc_url( $primary_url ); ?>"
+									alt="<?php echo esc_attr( $product['name'] ); ?>"
+									width="960"
+									height="600"
+									decoding="async"
+									fetchpriority="high"
+								>
+							</div>
+							<?php if ( count( $image_urls ) > 1 ) : ?>
+								<ul class="product-detail-thumbs" role="list">
+									<?php foreach ( $image_urls as $i => $img ) : ?>
+										<li>
+											<button
+												type="button"
+												class="product-detail-thumb<?php echo 0 === $i ? ' is-active' : ''; ?>"
+												data-full-src="<?php echo esc_url( $img['url'] ); ?>"
+												aria-label="<?php echo esc_attr( sprintf( /* translators: %d: image number */ __( 'Show image %d', 'bh-starter' ), $i + 1 ) ); ?>"
+												aria-pressed="<?php echo 0 === $i ? 'true' : 'false'; ?>"
+											>
+												<img src="<?php echo esc_url( $img['url'] ); ?>" alt="" loading="lazy" decoding="async" width="160" height="120">
+											</button>
+										</li>
+									<?php endforeach; ?>
+								</ul>
+							<?php endif; ?>
+						<?php else : ?>
+							<div class="product-detail-empty">
+								<div class="product-detail-empty-icon" aria-hidden="true"><?php echo $product['icon']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
+							</div>
+						<?php endif; ?>
 					</div>
 				<?php endif; ?>
-			</div>
-			<div class="product-detail-copy">
+				<div class="product-detail-copy">
 				<?php foreach ( $description as $para ) : ?>
 					<p><?php echo esc_html( $para ); ?></p>
 				<?php endforeach; ?>
