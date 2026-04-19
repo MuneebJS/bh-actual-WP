@@ -88,28 +88,30 @@ $screenshots = isset( $app_details['screenshots'] ) && is_array( $app_details['s
 					<p><?php echo esc_html( $para ); ?></p>
 				<?php endforeach; ?>
 				<?php if ( ! empty( $app_details ) ) : ?>
-					<section class="bh-mobile-apps bh-mobile-apps--compact">
+					<section class="bh-product-apps">
 						<?php if ( ! empty( $app_details['lead'] ) ) : ?>
-							<p class="bh-mobile-apps__lead"><?php echo esc_html( $app_details['lead'] ); ?></p>
+							<p class="bh-product-apps__lead"><?php echo esc_html( $app_details['lead'] ); ?></p>
 						<?php endif; ?>
 						<?php if ( ! empty( $app_details['store_url'] ) ) : ?>
 							<p>
-								<a class="bh-btn bh-btn--primary bh-mobile-apps__store-link" href="<?php echo esc_url( $app_details['store_url'] ); ?>" target="_blank" rel="noopener noreferrer">
+								<a class="bh-btn bh-btn--primary bh-product-apps__store-link" href="<?php echo esc_url( $app_details['store_url'] ); ?>" target="_blank" rel="noopener noreferrer">
 									<?php echo esc_html( ! empty( $app_details['store_label'] ) ? $app_details['store_label'] : __( 'Get it on Google Play', 'bh-starter' ) ); ?>
 								</a>
 							</p>
 						<?php endif; ?>
 						<?php if ( ! empty( $features ) ) : ?>
-							<ul class="bh-mobile-apps__features">
+							<ul class="bh-product-apps__features">
 								<?php foreach ( $features as $feature ) : ?>
 									<li><?php echo esc_html( $feature ); ?></li>
 								<?php endforeach; ?>
 							</ul>
 						<?php endif; ?>
 						<?php if ( ! empty( $screenshots ) ) : ?>
-							<div class="bh-mobile-apps__gallery">
+							<div class="bh-product-apps__gallery">
 								<?php foreach ( $screenshots as $index => $screen ) : ?>
-									<img src="<?php echo esc_url( bh_starter_mobile_apps_image_url( $screen ) ); ?>" alt="<?php echo esc_attr( sprintf( /* translators: %d: app screenshot number */ __( 'Boltay Huroof app screenshot %d', 'bh-starter' ), $index + 1 ) ); ?>" loading="lazy">
+									<figure class="bh-product-apps__shot">
+										<img src="<?php echo esc_url( bh_starter_mobile_apps_image_url( $screen ) ); ?>" alt="<?php echo esc_attr( sprintf( /* translators: %d: app screenshot number */ __( 'Boltay Huroof app screenshot %d', 'bh-starter' ), $index + 1 ) ); ?>" loading="lazy">
+									</figure>
 								<?php endforeach; ?>
 							</div>
 						<?php endif; ?>
