@@ -1189,6 +1189,10 @@ button, input, textarea, select {
   align-items: start;
 }
 
+.product-detail-grid--no-gallery {
+  grid-template-columns: 1fr;
+}
+
 .product-detail-main {
   border-radius: var(--radius-xl);
   overflow: hidden;
@@ -1439,7 +1443,7 @@ a.product-card--link {
   margin-top: var(--space-8);
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-4);
+  gap: var(--space-6);
 }
 
 .bh-home-apps__shot {
@@ -1448,7 +1452,7 @@ a.product-card--link {
   border: 1px solid var(--color-border);
   background: #fff;
   box-shadow: var(--shadow-sm);
-  padding: var(--space-2);
+  padding: var(--space-3);
 }
 
 .bh-home-apps__shot img {
@@ -1491,9 +1495,9 @@ a.product-card--link {
 .bh-product-apps__gallery {
   margin-top: var(--space-8);
   display: flex;
-  gap: var(--space-3);
+  gap: var(--space-5);
   overflow-x: auto;
-  padding-bottom: var(--space-2);
+  padding-bottom: var(--space-3);
   scroll-snap-type: x proximity;
 }
 
@@ -1514,7 +1518,7 @@ a.product-card--link {
   object-fit: contain;
   display: block;
   margin: 0 !important;
-  padding: var(--space-2);
+  padding: var(--space-3);
 }
 
 @media (max-width: 900px) {
