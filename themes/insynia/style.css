@@ -1418,8 +1418,23 @@ a.product-card--link {
   color: var(--color-dark);
 }
 
+.bh-mobile-apps--home,
+.bh-mobile-apps--compact {
+  margin-top: 0;
+}
+
 .bh-mobile-apps__store-link {
   text-decoration: none !important;
+}
+
+.bh-mobile-apps__features {
+  margin-top: var(--space-6);
+  margin-bottom: 0;
+  padding-left: var(--space-5);
+}
+
+.bh-mobile-apps__features li {
+  margin-bottom: var(--space-2);
 }
 
 .bh-mobile-apps__gallery {
