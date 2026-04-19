@@ -32,20 +32,28 @@ get_header();
 				}
 
 				if ( $bh_is_mobile_apps_page ) :
-					$bh_android_link = 'https://play.google.com/store/apps/details?id=com.mega_dealers.boltexponativewind&pcampaignid=web_share';
+					$bh_mobile_product = bh_starter_get_product_by_slug( 'urdu-english-braille-mobile-apps' );
+					$bh_app_details    = isset( $bh_mobile_product['app_details'] ) && is_array( $bh_mobile_product['app_details'] ) ? $bh_mobile_product['app_details'] : array();
+					$bh_android_link   = isset( $bh_app_details['store_url'] ) ? $bh_app_details['store_url'] : '';
+					$bh_store_label    = isset( $bh_app_details['store_label'] ) ? $bh_app_details['store_label'] : __( 'Get it on Google Play', 'bh-starter' );
+					$bh_screenshots    = isset( $bh_app_details['screenshots'] ) && is_array( $bh_app_details['screenshots'] ) ? $bh_app_details['screenshots'] : array();
 					?>
 					<section class="bh-mobile-apps">
-						<p class="bh-mobile-apps__lead"><?php esc_html_e( 'Download our Android app from Google Play.', 'bh-starter' ); ?></p>
-						<p>
-							<a class="bh-btn bh-btn--primary bh-mobile-apps__store-link" href="<?php echo esc_url( $bh_android_link ); ?>" target="_blank" rel="noopener noreferrer">
-								<?php esc_html_e( 'Get it on Google Play', 'bh-starter' ); ?>
-							</a>
-						</p>
-						<div class="bh-mobile-apps__gallery">
-							<img src="<?php echo esc_url( get_template_directory_uri() . '/assets/img/mobile-apps/app-screen-1.png' ); ?>" alt="<?php esc_attr_e( 'Boltay Huroof Android app screen 1', 'bh-starter' ); ?>" loading="lazy">
-							<img src="<?php echo esc_url( get_template_directory_uri() . '/assets/img/mobile-apps/app-screen-2.png' ); ?>" alt="<?php esc_attr_e( 'Boltay Huroof Android app screen 2', 'bh-starter' ); ?>" loading="lazy">
-							<img src="<?php echo esc_url( get_template_directory_uri() . '/assets/img/mobile-apps/app-screen-3.png' ); ?>" alt="<?php esc_attr_e( 'Boltay Huroof Android app screen 3', 'bh-starter' ); ?>" loading="lazy">
-						</div>
+						<p class="bh-mobile-apps__lead"><?php echo esc_html( ! empty( $bh_app_details['lead'] ) ? $bh_app_details['lead'] : __( 'Download our Android app from Google Play.', 'bh-starter' ) ); ?></p>
+						<?php if ( ! empty( $bh_android_link ) ) : ?>
+							<p>
+								<a class="bh-btn bh-btn--primary bh-mobile-apps__store-link" href="<?php echo esc_url( $bh_android_link ); ?>" target="_blank" rel="noopener noreferrer">
+									<?php echo esc_html( $bh_store_label ); ?>
+								</a>
+							</p>
+						<?php endif; ?>
+						<?php if ( ! empty( $bh_screenshots ) ) : ?>
+							<div class="bh-mobile-apps__gallery">
+								<?php foreach ( $bh_screenshots as $bh_index => $bh_screen ) : ?>
+									<img src="<?php echo esc_url( bh_starter_mobile_apps_image_url( $bh_screen ) ); ?>" alt="<?php echo esc_attr( sprintf( /* translators: %d: app screenshot number */ __( 'Boltay Huroof app screenshot %d', 'bh-starter' ), $bh_index + 1 ) ); ?>" loading="lazy">
+								<?php endforeach; ?>
+							</div>
+						<?php endif; ?>
 					</section>
 				<?php endif; ?>
 				<?php

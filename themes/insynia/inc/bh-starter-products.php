@@ -28,6 +28,32 @@ function bh_starter_products_images_uri() {
 }
 
 /**
+ * Base URI for mobile app images.
+ *
+ * @return string
+ */
+function bh_starter_mobile_apps_images_uri() {
+	return trailingslashit( get_template_directory_uri() ) . 'assets/img/mobile-apps/';
+}
+
+/**
+ * Build a public URL for a file under assets/img/mobile-apps.
+ *
+ * @param string $relative_path Path relative to mobile apps folder.
+ * @return string
+ */
+function bh_starter_mobile_apps_image_url( $relative_path ) {
+	$relative_path = ltrim( str_replace( '\\', '/', (string) $relative_path ), '/' );
+	if ( '' === $relative_path ) {
+		return '';
+	}
+	$parts    = explode( '/', $relative_path );
+	$encoded  = array_map( 'rawurlencode', $parts );
+	$rel_uri  = implode( '/', $encoded );
+	return bh_starter_mobile_apps_images_uri() . $rel_uri;
+}
+
+/**
  * Build a public URL for a file under assets/img/products (handles spaces & subfolders).
  *
  * @param string $relative_path Path relative to products folder, e.g. kids-books/file.jpg.
@@ -93,6 +119,21 @@ function bh_starter_products_catalog_definitions() {
 				__( 'Built for accessibility with screen reader–friendly interfaces and predictable output.', 'bh-starter' ),
 			),
 			'images'      => array(),
+			'app_details' => array(
+				'lead'        => __( 'Download our Android app from Google Play and start Urdu/English to Braille conversion on your phone.', 'bh-starter' ),
+				'store_label' => __( 'Get it on Google Play', 'bh-starter' ),
+				'store_url'   => 'https://play.google.com/store/apps/details?id=com.mega_dealers.boltexponativewind&pcampaignid=web_share',
+				'features'    => array(
+					__( 'Instant Urdu and English text-to-Braille conversion for day-to-day reading and writing support.', 'bh-starter' ),
+					__( 'Clean, accessible interface designed for screen readers and low-vision users.', 'bh-starter' ),
+					__( 'Useful for students, teachers, and families practicing Braille on the go.', 'bh-starter' ),
+				),
+				'screenshots' => array(
+					'app-screen-1.png',
+					'app-screen-2.png',
+					'app-screen-3.png',
+				),
+			),
 			'icon'        => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>',
 		),
 		'accessibility-software-for-banks' => array(
