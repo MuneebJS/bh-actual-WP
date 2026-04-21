@@ -312,3 +312,118 @@ function bh_starter_products_catalog_document_title( $parts ) {
 	return $parts;
 }
 add_filter( 'document_title_parts', 'bh_starter_products_catalog_document_title', 20 );
+
+/* ---------- Awards post type ---------- */
+
+function bh_starter_register_awards_post_type() {
+	register_post_type(
+		'bh_award',
+		array(
+			'labels' => array(
+				'name'               => __( 'Awards', 'bh-starter' ),
+				'singular_name'      => __( 'Award', 'bh-starter' ),
+				'add_new_item'       => __( 'Add New Award', 'bh-starter' ),
+				'edit_item'          => __( 'Edit Award', 'bh-starter' ),
+				'new_item'           => __( 'New Award', 'bh-starter' ),
+				'view_item'          => __( 'View Award', 'bh-starter' ),
+				'search_items'       => __( 'Search Awards', 'bh-starter' ),
+				'not_found'          => __( 'No awards found', 'bh-starter' ),
+				'not_found_in_trash' => __( 'No awards found in Trash', 'bh-starter' ),
+			),
+			'public'             => true,
+			'show_ui'            => true,
+			'show_in_rest'       => true,
+			'has_archive'        => false,
+			'menu_icon'          => 'dashicons-awards',
+			'publicly_queryable' => false,
+			'supports'           => array( 'title', 'editor', 'thumbnail', 'page-attributes' ),
+		)
+	);
+}
+add_action( 'init', 'bh_starter_register_awards_post_type' );
+
+function bh_starter_add_award_gallery_metabox() {
+	add_meta_box(
+		'bh-award-gallery',
+		__( 'Award Images', 'bh-starter' ),
+		'bh_starter_render_award_gallery_metabox',
+		'bh_award',
+		'normal',
+		'default'
+	);
+}
+add_action( 'add_meta_boxes', 'bh_starter_add_award_gallery_metabox' );
+
+function bh_starter_render_award_gallery_metabox( $post ) {
+	$gallery_ids = get_post_meta( $post->ID, '_bh_award_gallery_ids', true );
+	wp_nonce_field( 'bh_award_gallery_nonce', 'bh_award_gallery_nonce' );
+	?>
+	<div class="bh-award-admin">
+		<p><?php esc_html_e( 'Select one or more images for this award. These will appear on the Awards and Recognitions page.', 'bh-starter' ); ?></p>
+		<input type="hidden" class="bh-award-admin__ids" name="bh_award_gallery_ids" value="<?php echo esc_attr( $gallery_ids ); ?>">
+		<div class="bh-award-admin__actions">
+			<button type="button" class="button bh-award-admin__choose"><?php esc_html_e( 'Choose Images', 'bh-starter' ); ?></button>
+			<button type="button" class="button bh-award-admin__clear"><?php esc_html_e( 'Clear', 'bh-starter' ); ?></button>
+		</div>
+		<div class="bh-award-admin__preview"></div>
+	</div>
+	<?php
+}
+
+function bh_starter_save_award_gallery_metabox( $post_id ) {
+	if ( ! isset( $_POST['bh_award_gallery_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['bh_award_gallery_nonce'] ) ), 'bh_award_gallery_nonce' ) ) {
+		return;
+	}
+
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+		return;
+	}
+
+	if ( ! current_user_can( 'edit_post', $post_id ) ) {
+		return;
+	}
+
+	$post_type = get_post_type( $post_id );
+	if ( 'bh_award' !== $post_type ) {
+		return;
+	}
+
+	$gallery_ids = isset( $_POST['bh_award_gallery_ids'] ) ? sanitize_text_field( wp_unslash( $_POST['bh_award_gallery_ids'] ) ) : '';
+	$gallery_ids = preg_replace( '/[^0-9,]/', '', (string) $gallery_ids );
+
+	if ( '' === $gallery_ids ) {
+		delete_post_meta( $post_id, '_bh_award_gallery_ids' );
+		return;
+	}
+
+	update_post_meta( $post_id, '_bh_award_gallery_ids', $gallery_ids );
+}
+add_action( 'save_post', 'bh_starter_save_award_gallery_metabox' );
+
+function bh_starter_awards_admin_assets( $hook ) {
+	$screen = get_current_screen();
+
+	if ( ! $screen || 'bh_award' !== $screen->post_type ) {
+		return;
+	}
+
+	if ( ! in_array( $hook, array( 'post.php', 'post-new.php' ), true ) ) {
+		return;
+	}
+
+	wp_enqueue_media();
+
+	wp_enqueue_script(
+		'bh-starter-admin-awards',
+		get_template_directory_uri() . '/assets/js/admin-awards.js',
+		array( 'jquery' ),
+		BH_STARTER_VERSION,
+		true
+	);
+
+	$admin_css = '.bh-award-admin__actions{display:flex;gap:8px;margin-bottom:12px}.bh-award-admin__preview{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px}.bh-award-admin__preview-item img{width:100%;height:90px;object-fit:cover;border-radius:6px}';
+	wp_register_style( 'bh-starter-admin-awards', false, array(), BH_STARTER_VERSION );
+	wp_enqueue_style( 'bh-starter-admin-awards' );
+	wp_add_inline_style( 'bh-starter-admin-awards', $admin_css );
+}
+add_action( 'admin_enqueue_scripts', 'bh_starter_awards_admin_assets' );
