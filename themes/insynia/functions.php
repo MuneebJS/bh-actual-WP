@@ -84,6 +84,29 @@ function bh_starter_scripts() {
 }
 add_action( 'wp_enqueue_scripts', 'bh_starter_scripts' );
 
+/* ---------- Primary Menu Helpers ---------- */
+
+function bh_starter_primary_menu_mobile_apps_link( $items, $args ) {
+	if ( empty( $args->theme_location ) || 'primary' !== $args->theme_location ) {
+		return $items;
+	}
+
+	$mobile_apps_slug = 'urdu-english-braille-mobile-apps';
+	if ( false !== strpos( $items, $mobile_apps_slug ) ) {
+		return $items;
+	}
+
+	$mobile_apps_url  = bh_starter_product_permalink( $mobile_apps_slug );
+	$mobile_apps_item = sprintf(
+		'<li class="menu-item menu-item-type-custom menu-item-object-custom"><a href="%1$s">%2$s</a></li>',
+		esc_url( $mobile_apps_url ),
+		esc_html__( 'Mobile Apps', 'bh-starter' )
+	);
+
+	return $items . $mobile_apps_item;
+}
+add_filter( 'wp_nav_menu_items', 'bh_starter_primary_menu_mobile_apps_link', 10, 2 );
+
 /* ---------- Sidebars ---------- */
 
 function bh_starter_widgets_init() {
