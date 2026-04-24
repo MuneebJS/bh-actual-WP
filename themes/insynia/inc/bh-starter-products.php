@@ -28,6 +28,50 @@ function bh_starter_products_images_uri() {
 }
 
 /**
+ * URL for the standalone Mobile Apps page.
+ *
+ * @return string
+ */
+function bh_starter_mobile_apps_page_url() {
+	$page = get_page_by_path( 'mobile-apps' );
+	if ( $page instanceof WP_Post ) {
+		return trailingslashit( get_permalink( $page ) );
+	}
+
+	$legacy_page = get_page_by_path( 'mobile-app' );
+	if ( $legacy_page instanceof WP_Post ) {
+		return trailingslashit( get_permalink( $legacy_page ) );
+	}
+
+	return trailingslashit( home_url( '/mobile-apps/' ) );
+}
+
+/**
+ * Standalone mobile apps content.
+ *
+ * @return array<string, mixed>
+ */
+function bh_starter_get_mobile_apps_data() {
+	return array(
+		'name'        => __( 'Urdu/English to Braille Mobile Apps', 'bh-starter' ),
+		'short'       => __( 'Real-time text-to-Braille conversion apps for mobile devices.', 'bh-starter' ),
+		'app_details' => array(
+			'lead'        => __( 'Download our Android app from Google Play and start Urdu/English to Braille conversion on your phone.', 'bh-starter' ),
+			'store_label' => __( 'Get it on Google Play', 'bh-starter' ),
+			'store_url'   => 'https://play.google.com/store/apps/details?id=com.mega_dealers.boltexponativewind&pcampaignid=web_share',
+			'features'    => array(
+				__( 'Instant Urdu and English text-to-Braille conversion for day-to-day reading and writing support.', 'bh-starter' ),
+				__( 'Clean, accessible interface designed for screen readers and low-vision users.', 'bh-starter' ),
+				__( 'Useful for students, teachers, and families practicing Braille on the go.', 'bh-starter' ),
+			),
+			'screenshots' => array(
+				'app-screen-1.png',
+			),
+		),
+	);
+}
+
+/**
  * Base URI for mobile app images.
  *
  * @return string
@@ -112,29 +156,6 @@ function bh_starter_products_catalog_definitions() {
 			),
 			'images'      => array(),
 			'icon'        => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 10 3 12 0v-5"/></svg>',
-		),
-		'urdu-english-braille-mobile-apps' => array(
-			'name'        => __( 'Urdu/English to Braille Mobile Apps', 'bh-starter' ),
-			'short'       => __( 'Real-time text-to-Braille conversion apps for mobile devices.', 'bh-starter' ),
-			'description' => array(
-				__( 'Mobile apps convert Urdu and English input into Braille for quick reference, study, and communication on the go.', 'bh-starter' ),
-				__( 'Built for accessibility with screen reader–friendly interfaces and predictable output.', 'bh-starter' ),
-			),
-			'images'      => array(),
-			'app_details' => array(
-				'lead'        => __( 'Download our Android app from Google Play and start Urdu/English to Braille conversion on your phone.', 'bh-starter' ),
-				'store_label' => __( 'Get it on Google Play', 'bh-starter' ),
-				'store_url'   => 'https://play.google.com/store/apps/details?id=com.mega_dealers.boltexponativewind&pcampaignid=web_share',
-				'features'    => array(
-					__( 'Instant Urdu and English text-to-Braille conversion for day-to-day reading and writing support.', 'bh-starter' ),
-					__( 'Clean, accessible interface designed for screen readers and low-vision users.', 'bh-starter' ),
-					__( 'Useful for students, teachers, and families practicing Braille on the go.', 'bh-starter' ),
-				),
-				'screenshots' => array(
-					'app-screen-1.png',
-				),
-			),
-			'icon'        => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>',
 		),
 		'accessibility-software-for-banks' => array(
 			'name'        => __( 'Accessibility Software for Banks', 'bh-starter' ),

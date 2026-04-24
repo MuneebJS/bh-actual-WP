@@ -32,8 +32,8 @@ get_header();
 				}
 
 				if ( $bh_is_mobile_apps_page ) :
-					$bh_mobile_product = bh_starter_get_product_by_slug( 'urdu-english-braille-mobile-apps' );
-					$bh_app_details    = isset( $bh_mobile_product['app_details'] ) && is_array( $bh_mobile_product['app_details'] ) ? $bh_mobile_product['app_details'] : array();
+					$bh_mobile_apps = bh_starter_get_mobile_apps_data();
+					$bh_app_details = isset( $bh_mobile_apps['app_details'] ) && is_array( $bh_mobile_apps['app_details'] ) ? $bh_mobile_apps['app_details'] : array();
 					$bh_android_link   = isset( $bh_app_details['store_url'] ) ? $bh_app_details['store_url'] : '';
 					$bh_store_label    = isset( $bh_app_details['store_label'] ) ? $bh_app_details['store_label'] : __( 'Get it on Google Play', 'bh-starter' );
 					$bh_screenshots    = isset( $bh_app_details['screenshots'] ) && is_array( $bh_app_details['screenshots'] ) ? $bh_app_details['screenshots'] : array();
