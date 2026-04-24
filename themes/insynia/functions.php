@@ -91,12 +91,11 @@ function bh_starter_primary_menu_mobile_apps_link( $items, $args ) {
 		return $items;
 	}
 
-	$mobile_apps_slug = 'urdu-english-braille-mobile-apps';
-	if ( false !== strpos( $items, $mobile_apps_slug ) ) {
+	if ( false !== strpos( $items, '/mobile-apps/' ) || false !== strpos( $items, '/mobile-app/' ) || false !== stripos( $items, '>Mobile Apps<' ) ) {
 		return $items;
 	}
 
-	$mobile_apps_url  = bh_starter_product_permalink( $mobile_apps_slug );
+	$mobile_apps_url  = bh_starter_mobile_apps_page_url();
 	$mobile_apps_item = sprintf(
 		'<li class="menu-item menu-item-type-custom menu-item-object-custom"><a href="%1$s">%2$s</a></li>',
 		esc_url( $mobile_apps_url ),
@@ -106,6 +105,21 @@ function bh_starter_primary_menu_mobile_apps_link( $items, $args ) {
 	return $items . $mobile_apps_item;
 }
 add_filter( 'wp_nav_menu_items', 'bh_starter_primary_menu_mobile_apps_link', 10, 2 );
+
+function bh_starter_redirect_legacy_mobile_apps_product_url() {
+	if ( is_admin() ) {
+		return;
+	}
+
+	$slug = get_query_var( 'bh_product' );
+	if ( 'urdu-english-braille-mobile-apps' !== $slug ) {
+		return;
+	}
+
+	wp_safe_redirect( bh_starter_mobile_apps_page_url(), 301 );
+	exit;
+}
+add_action( 'template_redirect', 'bh_starter_redirect_legacy_mobile_apps_product_url', 1 );
 
 /* ---------- Sidebars ---------- */
 

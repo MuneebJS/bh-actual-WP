@@ -5,7 +5,7 @@
  * @package BH_Starter
  */
 
-$app_product = bh_starter_get_product_by_slug( 'urdu-english-braille-mobile-apps' );
+$app_product = bh_starter_get_mobile_apps_data();
 
 if ( empty( $app_product ) ) {
 	return;
