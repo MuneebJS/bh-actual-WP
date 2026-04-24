@@ -45,7 +45,6 @@
 					<a href="<?php echo esc_url( bh_starter_product_permalink( 'inclusive-braille-books' ) ); ?>"><?php esc_html_e( 'Braille Books', 'bh-starter' ); ?></a>
 					<a href="<?php echo esc_url( bh_starter_product_permalink( 'inclusive-braille-forms' ) ); ?>"><?php esc_html_e( 'Braille Forms', 'bh-starter' ); ?></a>
 					<a href="<?php echo esc_url( bh_starter_product_permalink( 'inclusive-braille-noorani-qaida' ) ); ?>"><?php esc_html_e( 'Noorani Qaida', 'bh-starter' ); ?></a>
-					<a href="<?php echo esc_url( bh_starter_mobile_apps_page_url() ); ?>"><?php esc_html_e( 'Mobile Apps', 'bh-starter' ); ?></a>
 					<a href="<?php echo esc_url( bh_starter_product_permalink( 'accessibility-software-for-banks' ) ); ?>"><?php esc_html_e( 'Bank Accessibility', 'bh-starter' ); ?></a>
 				</div>
 			</div>
@@ -56,6 +55,7 @@
 					<a href="#"><?php esc_html_e( 'About Us', 'bh-starter' ); ?></a>
 					<a href="#"><?php esc_html_e( 'Our Team', 'bh-starter' ); ?></a>
 					<a href="#"><?php esc_html_e( 'Blog', 'bh-starter' ); ?></a>
+					<a href="<?php echo esc_url( bh_starter_mobile_apps_page_url() ); ?>"><?php esc_html_e( 'Mobile Apps', 'bh-starter' ); ?></a>
 					<a href="#"><?php esc_html_e( 'Contact', 'bh-starter' ); ?></a>
 				</div>
 			</div>
