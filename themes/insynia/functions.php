@@ -86,6 +86,26 @@ add_action( 'wp_enqueue_scripts', 'bh_starter_scripts' );
 
 /* ---------- Primary Menu Helpers ---------- */
 
+function bh_starter_primary_menu_mobile_apps_top_level( $items, $args ) {
+	if ( empty( $args->theme_location ) || 'primary' !== $args->theme_location ) {
+		return $items;
+	}
+
+	foreach ( $items as $item ) {
+		$title = isset( $item->title ) ? wp_strip_all_tags( (string) $item->title ) : '';
+		$url   = isset( $item->url ) ? (string) $item->url : '';
+		if ( false === stripos( $title, 'mobile app' ) && false === strpos( $url, '/mobile-apps/' ) && false === strpos( $url, '/mobile-app/' ) ) {
+			continue;
+		}
+
+		$item->menu_item_parent = 0;
+		$item->classes          = is_array( $item->classes ) ? array_values( array_diff( $item->classes, array( 'menu-item-has-children' ) ) ) : $item->classes;
+	}
+
+	return $items;
+}
+add_filter( 'wp_nav_menu_objects', 'bh_starter_primary_menu_mobile_apps_top_level', 10, 2 );
+
 function bh_starter_primary_menu_mobile_apps_link( $items, $args ) {
 	if ( empty( $args->theme_location ) || 'primary' !== $args->theme_location ) {
 		return $items;
@@ -254,6 +274,10 @@ add_filter( 'body_class', 'bh_starter_body_classes' );
 function bh_starter_register_product_rewrites() {
 	add_rewrite_rule( '^products/?$', 'index.php?bh_products_catalog=1', 'top' );
 	add_rewrite_rule( '^product/([^/]+)/?$', 'index.php?bh_product=$matches[1]', 'top' );
+
+	if ( ! get_page_by_path( 'mobile-apps' ) && ! get_page_by_path( 'mobile-app' ) ) {
+		add_rewrite_rule( '^mobile-apps/?$', 'index.php?bh_mobile_apps_page=1', 'top' );
+	}
 }
 add_action( 'init', 'bh_starter_register_product_rewrites' );
 
@@ -261,7 +285,7 @@ add_action( 'init', 'bh_starter_register_product_rewrites' );
  * Bump when adding rewrite rules so existing installs flush once (Settings → Permalinks not required).
  */
 function bh_starter_maybe_flush_product_rewrites() {
-	$version = '2';
+	$version = '3';
 	if ( get_option( 'bh_starter_rewrite_version' ) === $version ) {
 		return;
 	}
@@ -274,6 +298,7 @@ add_action( 'init', 'bh_starter_maybe_flush_product_rewrites', 99 );
 function bh_starter_product_query_vars( $vars ) {
 	$vars[] = 'bh_products_catalog';
 	$vars[] = 'bh_product';
+	$vars[] = 'bh_mobile_apps_page';
 	return $vars;
 }
 add_filter( 'query_vars', 'bh_starter_product_query_vars' );
@@ -292,6 +317,9 @@ function bh_starter_pre_handle_404( $preempt, $wp_query ) {
 	if ( get_query_var( 'bh_products_catalog' ) ) {
 		return true;
 	}
+	if ( get_query_var( 'bh_mobile_apps_page' ) ) {
+		return true;
+	}
 	$slug = get_query_var( 'bh_product' );
 	if ( $slug && bh_starter_get_product_by_slug( $slug ) ) {
 		return true;
@@ -303,6 +331,9 @@ add_filter( 'pre_handle_404', 'bh_starter_pre_handle_404', 10, 2 );
 function bh_starter_product_template_include( $template ) {
 	if ( get_query_var( 'bh_products_catalog' ) ) {
 		return get_template_directory() . '/products-catalog.php';
+	}
+	if ( get_query_var( 'bh_mobile_apps_page' ) ) {
+		return get_template_directory() . '/mobile-apps.php';
 	}
 	$slug = get_query_var( 'bh_product' );
 	if ( ! $slug ) {
@@ -321,7 +352,7 @@ add_filter( 'template_include', 'bh_starter_product_template_include', 99 );
 function bh_starter_flush_product_rewrites() {
 	bh_starter_register_product_rewrites();
 	flush_rewrite_rules( false );
-	update_option( 'bh_starter_rewrite_version', '2' );
+	update_option( 'bh_starter_rewrite_version', '3' );
 }
 add_action( 'after_switch_theme', 'bh_starter_flush_product_rewrites' );
 
@@ -332,6 +363,9 @@ function bh_starter_body_classes_products( $classes ) {
 	if ( bh_starter_is_product_detail() ) {
 		$classes[] = 'product-detail-page';
 	}
+	if ( get_query_var( 'bh_mobile_apps_page' ) ) {
+		$classes[] = 'mobile-apps-page';
+	}
 	return $classes;
 }
 add_filter( 'body_class', 'bh_starter_body_classes_products' );
@@ -339,6 +373,8 @@ add_filter( 'body_class', 'bh_starter_body_classes_products' );
 function bh_starter_products_catalog_document_title( $parts ) {
 	if ( bh_starter_is_products_catalog_route() ) {
 		$parts['title'] = __( 'Products', 'bh-starter' );
+	} elseif ( get_query_var( 'bh_mobile_apps_page' ) ) {
+		$parts['title'] = __( 'Mobile Apps', 'bh-starter' );
 	} elseif ( bh_starter_is_product_detail() ) {
 		$slug    = get_query_var( 'bh_product' );
 		$product = $slug ? bh_starter_get_product_by_slug( $slug ) : null;
