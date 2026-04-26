@@ -278,6 +278,10 @@ function bh_starter_register_product_rewrites() {
 	if ( ! get_page_by_path( 'mobile-apps' ) && ! get_page_by_path( 'mobile-app' ) ) {
 		add_rewrite_rule( '^mobile-apps/?$', 'index.php?bh_mobile_apps_page=1', 'top' );
 	}
+
+	if ( ! get_page_by_path( 'contact' ) ) {
+		add_rewrite_rule( '^contact/?$', 'index.php?bh_contact_page=1', 'top' );
+	}
 }
 add_action( 'init', 'bh_starter_register_product_rewrites' );
 
@@ -285,7 +289,7 @@ add_action( 'init', 'bh_starter_register_product_rewrites' );
  * Bump when adding rewrite rules so existing installs flush once (Settings → Permalinks not required).
  */
 function bh_starter_maybe_flush_product_rewrites() {
-	$version = '3';
+	$version = '4';
 	if ( get_option( 'bh_starter_rewrite_version' ) === $version ) {
 		return;
 	}
@@ -299,6 +303,7 @@ function bh_starter_product_query_vars( $vars ) {
 	$vars[] = 'bh_products_catalog';
 	$vars[] = 'bh_product';
 	$vars[] = 'bh_mobile_apps_page';
+	$vars[] = 'bh_contact_page';
 	return $vars;
 }
 add_filter( 'query_vars', 'bh_starter_product_query_vars' );
@@ -320,6 +325,9 @@ function bh_starter_pre_handle_404( $preempt, $wp_query ) {
 	if ( get_query_var( 'bh_mobile_apps_page' ) ) {
 		return true;
 	}
+	if ( get_query_var( 'bh_contact_page' ) ) {
+		return true;
+	}
 	$slug = get_query_var( 'bh_product' );
 	if ( $slug && bh_starter_get_product_by_slug( $slug ) ) {
 		return true;
@@ -334,6 +342,9 @@ function bh_starter_product_template_include( $template ) {
 	}
 	if ( get_query_var( 'bh_mobile_apps_page' ) ) {
 		return get_template_directory() . '/mobile-apps.php';
+	}
+	if ( get_query_var( 'bh_contact_page' ) ) {
+		return get_template_directory() . '/contact.php';
 	}
 	$slug = get_query_var( 'bh_product' );
 	if ( ! $slug ) {
@@ -352,7 +363,7 @@ add_filter( 'template_include', 'bh_starter_product_template_include', 99 );
 function bh_starter_flush_product_rewrites() {
 	bh_starter_register_product_rewrites();
 	flush_rewrite_rules( false );
-	update_option( 'bh_starter_rewrite_version', '3' );
+	update_option( 'bh_starter_rewrite_version', '4' );
 }
 add_action( 'after_switch_theme', 'bh_starter_flush_product_rewrites' );
 
@@ -366,6 +377,9 @@ function bh_starter_body_classes_products( $classes ) {
 	if ( get_query_var( 'bh_mobile_apps_page' ) ) {
 		$classes[] = 'mobile-apps-page';
 	}
+	if ( get_query_var( 'bh_contact_page' ) ) {
+		$classes[] = 'contact-page';
+	}
 	return $classes;
 }
 add_filter( 'body_class', 'bh_starter_body_classes_products' );
@@ -375,6 +389,8 @@ function bh_starter_products_catalog_document_title( $parts ) {
 		$parts['title'] = __( 'Products', 'bh-starter' );
 	} elseif ( get_query_var( 'bh_mobile_apps_page' ) ) {
 		$parts['title'] = __( 'Mobile Apps', 'bh-starter' );
+	} elseif ( get_query_var( 'bh_contact_page' ) ) {
+		$parts['title'] = __( 'Contact', 'bh-starter' );
 	} elseif ( bh_starter_is_product_detail() ) {
 		$slug    = get_query_var( 'bh_product' );
 		$product = $slug ? bh_starter_get_product_by_slug( $slug ) : null;
@@ -385,6 +401,220 @@ function bh_starter_products_catalog_document_title( $parts ) {
 	return $parts;
 }
 add_filter( 'document_title_parts', 'bh_starter_products_catalog_document_title', 20 );
+
+/* ---------- SEO meta tags (description, canonical, Open Graph, JSON-LD) ---------- */
+
+/**
+ * Plain-text description fallback from post content.
+ *
+ * @param int $post_id Post ID.
+ * @return string
+ */
+function bh_starter_post_description_fallback( $post_id ) {
+	$excerpt = get_post_field( 'post_excerpt', $post_id );
+	if ( is_string( $excerpt ) && '' !== trim( $excerpt ) ) {
+		return wp_strip_all_tags( $excerpt );
+	}
+
+	$content = get_post_field( 'post_content', $post_id );
+	if ( ! is_string( $content ) ) {
+		return '';
+	}
+
+	$content = strip_shortcodes( $content );
+	$content = wp_strip_all_tags( $content );
+	$content = trim( preg_replace( '/\s+/', ' ', $content ) );
+	if ( '' === $content ) {
+		return '';
+	}
+
+	return wp_html_excerpt( $content, 155, '&hellip;' );
+}
+
+/**
+ * Default social preview image.
+ *
+ * @return string
+ */
+function bh_starter_default_share_image_url() {
+	$site_icon = get_site_icon_url( 512 );
+	if ( is_string( $site_icon ) && '' !== $site_icon ) {
+		return $site_icon;
+	}
+
+	$custom_logo_id = (int) get_theme_mod( 'custom_logo' );
+	if ( $custom_logo_id > 0 ) {
+		$logo_url = wp_get_attachment_image_url( $custom_logo_id, 'full' );
+		if ( is_string( $logo_url ) && '' !== $logo_url ) {
+			return $logo_url;
+		}
+	}
+
+	return bh_starter_mobile_apps_image_url( 'app-screen-1.png' );
+}
+
+/**
+ * Detect canonical URL for current front-end request.
+ *
+ * @return string
+ */
+function bh_starter_current_canonical_url() {
+	if ( is_front_page() ) {
+		return trailingslashit( home_url( '/' ) );
+	}
+
+	if ( get_query_var( 'bh_mobile_apps_page' ) || is_page( array( 'mobile-apps', 'mobile-app' ) ) ) {
+		return trailingslashit( bh_starter_mobile_apps_page_url() );
+	}
+
+	if ( get_query_var( 'bh_contact_page' ) ) {
+		return trailingslashit( home_url( '/contact/' ) );
+	}
+
+	if ( bh_starter_is_product_detail() ) {
+		$slug = get_query_var( 'bh_product' );
+		if ( $slug ) {
+			return trailingslashit( bh_starter_product_permalink( $slug ) );
+		}
+	}
+
+	if ( is_singular() ) {
+		return trailingslashit( get_permalink() );
+	}
+
+	if ( is_home() ) {
+		$posts_page_id = (int) get_option( 'page_for_posts' );
+		if ( $posts_page_id > 0 ) {
+			return trailingslashit( get_permalink( $posts_page_id ) );
+		}
+	}
+
+	$request_path = '';
+	if ( isset( $GLOBALS['wp'] ) && isset( $GLOBALS['wp']->request ) && is_string( $GLOBALS['wp']->request ) ) {
+		$request_path = $GLOBALS['wp']->request;
+	}
+
+	return trailingslashit( home_url( $request_path ) );
+}
+
+/**
+ * Build per-page SEO context.
+ *
+ * @return array<string, mixed>
+ */
+function bh_starter_seo_context() {
+	$site_name        = get_bloginfo( 'name' );
+	$site_description = get_bloginfo( 'description' );
+	$title            = wp_get_document_title();
+	$description      = '';
+	$image            = '';
+	$schema_type      = 'WebPage';
+	$url              = bh_starter_current_canonical_url();
+
+	if ( is_front_page() ) {
+		$description = __( 'Boltay Huroof creates inclusive Braille books, forms, mobile apps, and accessibility technology for visually impaired communities.', 'bh-starter' );
+		$schema_type = 'WebSite';
+	} elseif ( get_query_var( 'bh_contact_page' ) || is_page( 'contact' ) ) {
+		$description = __( 'Contact Boltay Huroof to discuss inclusive Braille products, accessibility software, and collaboration opportunities.', 'bh-starter' );
+	} elseif ( get_query_var( 'bh_mobile_apps_page' ) || is_page( array( 'mobile-apps', 'mobile-app' ) ) ) {
+		$mobile_apps  = bh_starter_get_mobile_apps_data();
+		$description  = isset( $mobile_apps['short'] ) ? (string) $mobile_apps['short'] : '';
+		$app_details  = isset( $mobile_apps['app_details'] ) && is_array( $mobile_apps['app_details'] ) ? $mobile_apps['app_details'] : array();
+		$screenshots  = isset( $app_details['screenshots'] ) && is_array( $app_details['screenshots'] ) ? $app_details['screenshots'] : array();
+		$first_screen = ! empty( $screenshots ) ? (string) $screenshots[0] : '';
+		if ( '' !== $first_screen ) {
+			$image = bh_starter_mobile_apps_image_url( $first_screen );
+		}
+	} elseif ( bh_starter_is_product_detail() ) {
+		$slug    = get_query_var( 'bh_product' );
+		$product = $slug ? bh_starter_get_product_by_slug( $slug ) : null;
+		if ( $product ) {
+			$description = isset( $product['short'] ) ? (string) $product['short'] : '';
+			$schema_type = 'Product';
+			$image       = bh_starter_product_card_image_url( $product );
+		}
+	} elseif ( is_singular() ) {
+		$post_id      = get_queried_object_id();
+		$description  = $post_id ? bh_starter_post_description_fallback( $post_id ) : '';
+		$thumb        = $post_id ? get_the_post_thumbnail_url( $post_id, 'full' ) : '';
+		$image        = is_string( $thumb ) ? $thumb : '';
+	}
+
+	if ( '' === trim( $description ) ) {
+		$description = $site_description;
+	}
+	if ( '' === trim( $description ) ) {
+		$description = __( 'Inclusive Braille and accessibility solutions by Boltay Huroof.', 'bh-starter' );
+	}
+	if ( '' === trim( $image ) ) {
+		$image = bh_starter_default_share_image_url();
+	}
+
+	return array(
+		'title'            => $title,
+		'description'      => trim( $description ),
+		'image'            => $image,
+		'url'              => $url,
+		'schema_type'      => $schema_type,
+		'site_name'        => $site_name,
+		'site_description' => $site_description,
+	);
+}
+
+/**
+ * Output baseline SEO tags when no SEO plugin is handling this theme.
+ */
+function bh_starter_output_seo_meta_tags() {
+	if ( is_admin() || is_feed() || is_robots() || is_trackback() ) {
+		return;
+	}
+
+	$seo = bh_starter_seo_context();
+
+	echo "\n" . '<meta name="description" content="' . esc_attr( $seo['description'] ) . '">' . "\n";
+	echo '<link rel="canonical" href="' . esc_url( $seo['url'] ) . '">' . "\n";
+	echo '<meta property="og:locale" content="' . esc_attr( str_replace( '_', '-', get_locale() ) ) . '">' . "\n";
+	echo '<meta property="og:type" content="' . esc_attr( 'WebSite' === $seo['schema_type'] ? 'website' : 'article' ) . '">' . "\n";
+	echo '<meta property="og:site_name" content="' . esc_attr( $seo['site_name'] ) . '">' . "\n";
+	echo '<meta property="og:title" content="' . esc_attr( $seo['title'] ) . '">' . "\n";
+	echo '<meta property="og:description" content="' . esc_attr( $seo['description'] ) . '">' . "\n";
+	echo '<meta property="og:url" content="' . esc_url( $seo['url'] ) . '">' . "\n";
+	echo '<meta property="og:image" content="' . esc_url( $seo['image'] ) . '">' . "\n";
+	echo '<meta name="twitter:card" content="summary_large_image">' . "\n";
+	echo '<meta name="twitter:title" content="' . esc_attr( $seo['title'] ) . '">' . "\n";
+	echo '<meta name="twitter:description" content="' . esc_attr( $seo['description'] ) . '">' . "\n";
+	echo '<meta name="twitter:image" content="' . esc_url( $seo['image'] ) . '">' . "\n";
+
+	$schema = array(
+		'@context'    => 'https://schema.org',
+		'@type'       => $seo['schema_type'],
+		'name'        => $seo['title'],
+		'description' => $seo['description'],
+		'url'         => $seo['url'],
+	);
+
+	if ( 'Product' === $seo['schema_type'] ) {
+		$schema['brand'] = array(
+			'@type' => 'Brand',
+			'name'  => $seo['site_name'],
+		);
+	}
+
+	if ( 'WebSite' === $seo['schema_type'] ) {
+		$schema['publisher'] = array(
+			'@type' => 'Organization',
+			'name'  => $seo['site_name'],
+			'url'   => trailingslashit( home_url( '/' ) ),
+		);
+	}
+
+	if ( '' !== trim( $seo['image'] ) ) {
+		$schema['image'] = $seo['image'];
+	}
+
+	echo '<script type="application/ld+json">' . wp_json_encode( $schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . '</script>' . "\n";
+}
+add_action( 'wp_head', 'bh_starter_output_seo_meta_tags', 1 );
 
 /* ---------- Awards post type ---------- */
 
